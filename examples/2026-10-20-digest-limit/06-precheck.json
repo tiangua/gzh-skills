@@ -1,0 +1,46 @@
+{
+  "pass": true,
+  "publish_mode": "manual",
+  "title": "公众号摘要上限是 120 字：写稿工具该改哪几处",
+  "digest": "官方《新增草稿》文档写明摘要不超过 120 个字，变更日志记为“对齐mp端120字”。第三方资料里还能看到 128 的写法，写稿工具的长度检查值得对一遍。",
+  "author": "",
+  "source_url": "",
+  "errors": [],
+  "warnings": [
+    "对照表 C7（待核实）：旧的接口上限就是 128 字 —— 人工确认它没有进入正文"
+  ],
+  "info": {
+    "factual_sentences": 9,
+    "unsourced_sentences": 0,
+    "source_urls": [
+      "https://developers.weixin.qq.com/doc/subscription/api/draftbox/draftmanage/api_draft_add.html",
+      "https://docs.huancode.com/blog/wechat-draft-add-api"
+    ],
+    "hedges_draft": {
+      "可能": 3,
+      "超过": 6,
+      "如果": 1
+    },
+    "hedges_final": {
+      "可能": 3,
+      "超过": 6,
+      "如果": 2,
+      "或": 1
+    },
+    "claims_rows": 7,
+    "html": {
+      "html_chars": 4228,
+      "text_chars": 781
+    },
+    "cover_pass": true
+  },
+  "package": {
+    "dir": "package",
+    "files": [
+      "article.html",
+      "cover-235.png",
+      "cover-1x1-preview.png",
+      "publish.md"
+    ]
+  }
+}

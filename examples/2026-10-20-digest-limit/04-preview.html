@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>预览：公众号摘要上限是 120 字：写稿工具该改哪几处</title>
+<!-- 本页只用于本地预览。复制按钮只复制中间的文章区域；页面自身的样式和脚本不会进入公众号。 -->
+<style>
+  body { margin: 0; background: #ededed; font-family: -apple-system, "PingFang SC", "Noto Sans CJK SC", sans-serif; }
+  .bar { position: sticky; top: 0; background: #fff; border-bottom: 1px solid #ddd; padding: 10px 16px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; z-index: 1; }
+  .bar b { font-size: 15px; }
+  .bar span { color: #666; font-size: 13px; }
+  .bar button { margin-left: auto; padding: 6px 14px; border: 0; border-radius: 4px; background: #07c160; color: #fff; font-size: 14px; cursor: pointer; }
+  .meta { max-width: 677px; margin: 16px auto 0; padding: 12px 16px; background: #fffbe6; border: 1px solid #ffe58f; font-size: 13px; color: #614700; }
+  .phone { max-width: 677px; margin: 16px auto 48px; background: #fff; padding: 20px 16px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+</style>
+</head>
+<body>
+<div class="bar">
+  <b>公众号摘要上限是 120 字：写稿工具该改哪几处</b>
+  <span>主题：经典蓝</span>
+  <span>正文 781 字 · 错误 0 · 警告 0</span>
+  <button id="copy" type="button">复制正文</button>
+</div>
+<div class="meta">摘要：官方《新增草稿》文档写明摘要不超过 120 个字，变更日志记为“对齐mp端120字”。第三方资料里还能看到 128 的写法，写稿工具的长度检查值得对一遍。<br>发布方式：手动。复制后在公众号编辑器里粘贴，重新上传图片和封面，人工检查后再发布。</div>
+<div class="phone"><div id="article"><section style="font-family: -apple-system-font, BlinkMacSystemFont, &#x27;Helvetica Neue&#x27;, &#x27;PingFang SC&#x27;, &#x27;Hiragino Sans GB&#x27;, &#x27;Microsoft YaHei UI&#x27;, &#x27;Microsoft YaHei&#x27;, Arial, sans-serif; font-size: 16px; line-height: 1.75; color: #3f3f3f; text-align: left; word-wrap: break-word; padding: 0 4px;"><p style="margin: 1.5em 8px; letter-spacing: 0.1em; color: #3f3f3f;">微信官方的《新增草稿》接口文档写明，图文消息的摘要“总长度不超过120个字”<sup style="color: #576b95; font-size: 75%; line-height: 0; vertical-align: super;">[1]</sup>。如果你的写稿或排版工具会自动生成摘要，这个数字值得对一下。</p><h2 style="display: table; padding: 0 0.3em; margin: 3em auto 1.5em; color: #ffffff; background: #0F4C81; font-size: 19px; font-weight: bold; text-align: center;">发生了什么</h2><p style="margin: 1.5em 8px; letter-spacing: 0.1em; color: #3f3f3f;">文档的变更日志里有一条记录：2026 年 07 月 14 日，“api摘要长度限制对齐mp端120字”<sup style="color: #576b95; font-size: 75%; line-height: 0; vertical-align: super;">[1]</sup>。从措辞看，此前接口的摘要上限可能与后台编辑器不一致；变更日志没有写明旧值<sup style="color: #576b95; font-size: 75%; line-height: 0; vertical-align: super;">[1]</sup>。</p><p style="margin: 1.5em 8px; letter-spacing: 0.1em; color: #3f3f3f;">一些第三方整理的接口说明仍写着摘要“最多 128 个字符”<sup style="color: #576b95; font-size: 75%; line-height: 0; vertical-align: super;">[2]</sup>。</p><p style="margin: 1.5em 8px; letter-spacing: 0.1em; color: #3f3f3f;">同一份文档还规定：标题不超过 32 个字，作者不超过 16 个字；摘要只有单图文消息才有，不填时默认抓取正文前 54 个字<sup style="color: #576b95; font-size: 75%; line-height: 0; vertical-align: super;">[1]</sup>。</p><h2 style="display: table; padding: 0 0.3em; margin: 3em auto 1.5em; color: #ffffff; background: #0F4C81; font-size: 19px; font-weight: bold; text-align: center;">对写稿流程意味着什么</h2><p style="margin: 1.5em 8px; letter-spacing: 0.1em; color: #3f3f3f;">如果工具仍按 128 字<sup style="color: #576b95; font-size: 75%; line-height: 0; vertical-align: super;">[2]</sup>截断摘要，按官方文档<sup style="color: #576b95; font-size: 75%; line-height: 0; vertical-align: super;">[1]</sup>的写法就可能超限。我的判断是，写稿工具里的长度检查最好直接以官方文档为准，并在检查报告里注明查阅日期。</p><p style="margin: 1.5em 8px; letter-spacing: 0.1em; color: #3f3f3f;">正文也有限制：文档要求内容“必须少于2万字符，小于1M”，会去除 JS，外部图片 URL 会被过滤<sup style="color: #576b95; font-size: 75%; line-height: 0; vertical-align: super;">[1]</sup>。</p><h2 style="display: table; padding: 0 0.3em; margin: 3em auto 1.5em; color: #ffffff; background: #0F4C81; font-size: 19px; font-weight: bold; text-align: center;">边界</h2><p style="margin: 1.5em 8px; letter-spacing: 0.1em; color: #3f3f3f;">这些限制写在接口文档里。手动在后台编辑时，编辑器的提示可能不同，以后台为准。本文没有实测接口返回的报错。</p><h2 style="display: table; padding: 0 0.3em; margin: 3em auto 1.5em; color: #ffffff; background: #0F4C81; font-size: 19px; font-weight: bold; text-align: center;">可以怎么做</h2><section style="margin: 1em 8px; padding-left: 0; color: #3f3f3f;"><section style="margin: 0.3em 0; letter-spacing: 0.05em; color: #3f3f3f;"><span style="color: #0F4C81; margin-right: 0.5em;">•</span>把摘要检查改成不超过 120 字，标题不超过 32 字，作者不超过 16 字<sup style="color: #576b95; font-size: 75%; line-height: 0; vertical-align: super;">[1]</sup>。</section><section style="margin: 0.3em 0; letter-spacing: 0.05em; color: #3f3f3f;"><span style="color: #0F4C81; margin-right: 0.5em;">•</span>不写摘要时，后台会取正文前 54 个字<sup style="color: #576b95; font-size: 75%; line-height: 0; vertical-align: super;">[1]</sup>，开头两句要能单独读懂。</section><section style="margin: 0.3em 0; letter-spacing: 0.05em; color: #3f3f3f;"><span style="color: #0F4C81; margin-right: 0.5em;">•</span>正文里的图片在编辑器里重新上传，不依赖外链图片<sup style="color: #576b95; font-size: 75%; line-height: 0; vertical-align: super;">[1]</sup>。</section></section><p style="margin: 1.5em 8px; letter-spacing: 0.1em; color: #3f3f3f;">（本文为 gzh-skills 的流程演示样稿。）</p><p style="margin: 2.5em 8px 0.5em; color: #3f3f3f; font-size: 15px; font-weight: bold;">参考资料</p><p style="margin: 0.3em 8px; font-size: 12px; line-height: 1.6; color: #888888; word-break: break-all;">[1] 新增草稿 | 微信公众号文档：https://developers.weixin.qq.com/doc/subscription/api/draftbox/draftmanage/api_draft_add.html</p><p style="margin: 0.3em 8px; font-size: 12px; line-height: 1.6; color: #888888; word-break: break-all;">[2] 微信公众号草稿箱 API：新增草稿 (draft/add) | HuanCode Docs：https://docs.huancode.com/blog/wechat-draft-add-api</p></section></div></div>
+<script>
+document.getElementById('copy').addEventListener('click', async () => {
+  const el = document.getElementById('article');
+  const btn = document.getElementById('copy');
+  try {
+    const htmlBlob = new Blob([el.innerHTML], { type: 'text/html' });
+    const textBlob = new Blob([el.innerText], { type: 'text/plain' });
+    await navigator.clipboard.write([new ClipboardItem({ 'text/html': htmlBlob, 'text/plain': textBlob })]);
+  } catch (e) {
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    const sel = window.getSelection();
+    sel.removeAllRanges(); sel.addRange(range);
+    document.execCommand('copy');
+    sel.removeAllRanges();
+  }
+  btn.textContent = '已复制';
+  setTimeout(() => { btn.textContent = '复制正文'; }, 1500);
+});
+</script>
+</body>
+</html>

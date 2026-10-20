@@ -1,0 +1,158 @@
+{
+  "spec": {
+    "style": "swiss",
+    "mark": "120",
+    "kicker": "WeChat API",
+    "title": "公众号摘要上限是 120 字，写稿工具该改哪几处",
+    "subtitle": "官方《新增草稿》文档的一条变更",
+    "byline": "示例账号",
+    "date": "2026-10-20"
+  },
+  "files": {
+    "cover_235": "05-cover-235.png",
+    "cover_1x1_preview": "05-cover-1x1.png",
+    "html": "05-cover-source.html"
+  },
+  "wechat_crop_hint": {
+    "2.35_1": {
+      "x1": 0,
+      "y1": 0,
+      "x2": 1,
+      "y2": 1
+    },
+    "1_1": {
+      "x1": 0,
+      "y1": 0,
+      "x2": 0.4256,
+      "y2": 1
+    },
+    "note": "在公众号后台上传头图后，1:1 裁剪框拖到最左侧正方形即可（坐标以图片左上角为原点，0–1 比例）。"
+  },
+  "dom": {
+    "crop": [
+      0,
+      0,
+      383,
+      383
+    ],
+    "items": [
+      {
+        "role": "mark",
+        "text": "120",
+        "box": [
+          88.8,
+          111.5,
+          294.2,
+          271.5
+        ],
+        "font": 128,
+        "overflowX": 0,
+        "lines": 1,
+        "maxLines": null,
+        "inCrop": true,
+        "outCrop": false,
+        "contrast": 10.69
+      },
+      {
+        "role": "kicker",
+        "text": "WECHAT API",
+        "box": [
+          423,
+          40,
+          856,
+          59
+        ],
+        "font": 15,
+        "overflowX": 0,
+        "lines": 1,
+        "maxLines": null,
+        "inCrop": false,
+        "outCrop": true,
+        "contrast": 10.23
+      },
+      {
+        "role": "title",
+        "text": "公众号摘要上限是 120 字，写稿工具该改哪几处",
+        "box": [
+          423,
+          87.5,
+          856,
+          248.5
+        ],
+        "font": 44,
+        "overflowX": 0,
+        "lines": 3,
+        "maxLines": 3,
+        "inCrop": false,
+        "outCrop": true,
+        "contrast": 18.94
+      },
+      {
+        "role": "subtitle",
+        "text": "官方《新增草稿》文档的一条变更",
+        "box": [
+          423,
+          260.5,
+          856,
+          287.5
+        ],
+        "font": 18,
+        "overflowX": 0,
+        "lines": 1,
+        "maxLines": 2,
+        "inCrop": false,
+        "outCrop": true,
+        "contrast": 6.11
+      },
+      {
+        "role": "byline",
+        "text": "示例账号",
+        "box": [
+          423,
+          329,
+          479,
+          349
+        ],
+        "font": 14,
+        "overflowX": 0,
+        "lines": 1,
+        "maxLines": null,
+        "inCrop": false,
+        "outCrop": true,
+        "contrast": 6.11
+      },
+      {
+        "role": "date",
+        "text": "2026-10-20",
+        "box": [
+          784.1,
+          329,
+          856,
+          349
+        ],
+        "font": 14,
+        "overflowX": 0,
+        "lines": 1,
+        "maxLines": null,
+        "inCrop": false,
+        "outCrop": true,
+        "contrast": 6.11
+      }
+    ],
+    "W": 900,
+    "H": 383,
+    "SAFE": 16
+  },
+  "pixel": {
+    "file": "05-cover-235.png",
+    "size": "1800x766",
+    "fill": 0.469,
+    "crop_fill": 0.253,
+    "main_fill": 0.426,
+    "problems": [],
+    "pass": true
+  },
+  "warnings": [],
+  "problems": [],
+  "pass": true
+}
