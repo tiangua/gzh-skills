@@ -1,0 +1,31 @@
+gzh-skills
+Copyright 2026 gzh-skills contributors
+
+本项目以 Apache License 2.0 发布（见 LICENSE）。
+
+本项目包含改写自以下项目的内容。原项目的版权和许可声明保留如下，
+完整许可文本见 third_party_licenses/ 目录；逐文件的改写说明见 CREDITS.md。
+
+------------------------------------------------------------------------
+ZJU-REAL/Easel — https://github.com/ZJU-REAL/Easel
+Apache License 2.0（与本项目 LICENSE 文本相同）
+改写的文件：skills/shared/scoring-dimensions.md；skills/builtin/text-polisher/references/zh-ai-markers.md；
+skills/builtin/card-design/references/{styles,typography,layout-laws}.md 与 scripts/card_audit.py；
+skills/builtin/skill-publish-checklist、skill-quality-gate/references/general-rules.md、skill-risk-scanner；
+skills/builtin/skill-article-outline、skill-hook-generator（结构与开头写法）。
+以上文件均已修改，修改处在本项目对应文件开头注明。
+未使用 Easel 中以其他许可发布的部分（如 skills/builtin/gzh-design，AGPL-3.0）。
+
+------------------------------------------------------------------------
+op7418/Humanizer-zh — https://github.com/op7418/Humanizer-zh
+MIT License, Copyright (c) 2026 歸藏
+其上游：blader/humanizer（MIT License, Copyright (c) 2025 Siqi Chen）、
+hardikpandya/stop-slop（MIT License, Copyright (c) 2025 Hardik Pandya）。
+
+------------------------------------------------------------------------
+wewrite — https://github.com/imraywang/wewrite
+MIT License, Copyright (c) 2026 OpenClaw
+
+------------------------------------------------------------------------
+doocs/md — https://github.com/doocs/md
+WTFPL Version 2, Copyright (C) 2025 Doocs <admin@doocs.org>

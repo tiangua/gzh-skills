@@ -1,0 +1,4 @@
+markdown==3.11.2
+playwright==1.64.0
+pillow
+numpy
