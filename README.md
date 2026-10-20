@@ -64,13 +64,19 @@ python3 -m venv .venv
 - `evals/`：
   - `humanize-cases.json`：`zh-humanize` 的边界用例（不补数字、不丢限定词、不改引语、润色后不变长变空……）；
   - `precheck-cases/`：故意埋了问题的稿件（缺出处、绝对化标题、“可能”变“确定”、新增数字、占位链接）；
-  - `run_checks.py`：一键跑全部脚本类检查。
+  - `check_skill_change.py`：技能改动的合入前检查（正文过长、参考文件膨胀、混进日期或聊天记录）；
+  - `run_checks.py`：一键跑全部脚本类检查（包含上一项）。
 
 ```bash
 .venv/bin/python evals/run_checks.py            # 全部
 .venv/bin/python evals/run_checks.py humanize --original 02-draft.md --edited 03-final.md
 bash examples/2026-10-20-digest-limit/rebuild.sh   # 重新生成示例产物
+.venv/bin/python evals/check_skill_change.py       # 改技能后、合入前：工作区 vs HEAD
 ```
+
+## 技能怎么改
+
+执行者不直接改技能。想改就提交一份待审改动（改哪里、改成什么、一行理由、改前改后各一个例子），人批准后才合入并同步到技能库；各执行者的教训按“规则 + 原因 + 影响哪一步”记在自己的 `lessons.md` 里。完整约定见 [docs/skill-evolution.md](docs/skill-evolution.md)。
 
 ## 目录结构
 
@@ -86,8 +92,9 @@ gzh-skills/
 │   ├── gzh-format/            SKILL.md, scripts/wechat_html.py, themes/{classic,grace}.json, templates/preview.html
 │   ├── gzh-cover/             SKILL.md, references/styles.md, templates/cover.html, scripts/{render,audit}.py
 │   └── gzh-precheck/          SKILL.md, references/checklist.md, scripts/check_sources.py
+├── docs/skill-evolution.md     # 待审改动与教训记录的约定
 ├── examples/2026-10-20-digest-limit/
-└── evals/                     humanize-cases.json, precheck-cases/, run_checks.py
+└── evals/                     humanize-cases.json, precheck-cases/, run_checks.py, check_skill_change.py
 ```
 
 ## 许可证与来源

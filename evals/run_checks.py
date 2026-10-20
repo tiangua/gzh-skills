@@ -12,6 +12,8 @@
             也可以检查真实改写结果：
               run_checks.py humanize --original 02-draft.md --edited 03-final.md
               run_checks.py humanize --cases outputs.json   # {"case_id": "改写结果", ...}
+  skillchange  技能改动的合入前检查（evals/check_skill_change.py）：先自测规则，再全量检查所有技能，
+            最后检查工作区相对 HEAD 的改动（正文过长、参考文件膨胀、混进日期或聊天记录）
   all       依次运行以上全部（默认）
 退出码：0 = 全部通过。
 """
@@ -219,10 +221,28 @@ def check_humanize(original=None, edited=None, outputs=None) -> bool:
     return ok
 
 
+# ----------------------------------------------------------------------------- skillchange
+def check_skillchange(base: str = "HEAD") -> bool:
+    sys.path.insert(0, str(EVALS))
+    import contextlib, io
+    import check_skill_change as csc
+    p = csc.build_parser()
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        fails = csc.selftest(p.parse_args([]))
+    ok = record("skillchange 检查规则自测", not fails, "; ".join(fails))
+    rep = csc.run(p.parse_args(["--all"]))
+    ok &= record("skillchange 全部技能无过长正文 / 流水账", not rep, " | ".join(rep)[:400])
+    rep = csc.run(p.parse_args(["--base", base]))
+    ok &= record(f"skillchange 工作区 vs {base}", not rep, " | ".join(rep)[:400])
+    return ok
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="gzh-skills 回归检查")
-    ap.add_argument("cmd", nargs="?", default="all", choices=["all", "skills", "format", "cover", "precheck", "humanize"])
+    ap.add_argument("cmd", nargs="?", default="all", choices=["all", "skills", "format", "cover", "precheck", "humanize", "skillchange"])
     ap.add_argument("--original"); ap.add_argument("--edited"); ap.add_argument("--cases")
+    ap.add_argument("--base", default="HEAD", help="skillchange 对比的提交")
     a = ap.parse_args(argv)
     ok = True
     if a.cmd in ("all", "skills"):
@@ -235,6 +255,8 @@ def main(argv=None) -> int:
         ok &= check_precheck()
     if a.cmd in ("all", "humanize"):
         ok &= check_humanize(a.original, a.edited, a.cases)
+    if a.cmd in ("all", "skillchange"):
+        ok &= check_skillchange(a.base)
     n_fail = sum(1 for _, g, _ in RESULTS if not g)
     print(f"\n共 {len(RESULTS)} 项，失败 {n_fail} 项")
     return 0 if ok and n_fail == 0 else 1

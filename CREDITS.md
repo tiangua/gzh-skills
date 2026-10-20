@@ -36,6 +36,7 @@
 | [isjiamu/gzh-design-skill](https://github.com/isjiamu/gzh-design-skill)（含 Easel 内的 `gzh-design` 副本） | AGPL-3.0 | 公众号排版“只能用内联样式”的约束思路。没有使用其任何模板或样式 |
 | [geekjourneyx/md2wechat-skill](https://github.com/geekjourneyx/md2wechat-skill) | 源码可见许可（BSL 1.1 衍生） | 终稿 front matter 携带标题、摘要等元数据的思路。长度上限改为直接引用微信官方文档 |
 | [doniyor117/no-ai-slop](https://github.com/doniyor117/no-ai-slop)（核对提交 `52b8051`） | MIT；其模式清单改编自维基百科 “Signs of AI writing”，为 CC BY-SA 4.0 | “换个对象还成立吗”“是不是读者都知道”两个测试，用于 `gzh-draft` 写正文和自查、`gzh-topic-pick` 判断新增价值。中文规则自行编写，未收录其 36 条模式清单的任何文字；未采纳其“绝对不用破折号”的规则（与 `zh-humanize` 不机械删破折号的原则冲突） |
+| [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) 技能文档（[Skills System](https://hermes-agent.nousresearch.com/docs/user-guide/features/skills)） | 项目为 MIT；只参考了公开文档 | “记教训，不记日志”的技能写法（规则 + 一句原因，挂在受影响的步骤上，不写事故经过、编号、日期、聊天原话）；技能写入先暂存、人批准后才落地（write_approval）；正文过长、参考文件过多、编号堆积的提示型检查。`docs/skill-evolution.md` 和 `evals/check_skill_change.py` 为本项目自行编写，阈值按本仓库规模另定 |
 | [xiaohuailabs/xiaohu-wechat-format](https://github.com/xiaohuailabs/xiaohu-wechat-format) | README 写 MIT，但没有 LICENSE 文件 | Markdown 转公众号 HTML 的一般思路 |
 
 ## 三、没有使用
