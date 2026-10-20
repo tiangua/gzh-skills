@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<!--
+  公众号封面模板（900×383 CSS 像素，按 2 倍渲染为 1800×766）。
+  公众号用同一张图分别裁出 2.35:1 头图和 1:1 分享缩略图，所以版式分两块：
+    左侧 .crop  正方形（383×383），放 1–4 个字的“标记”，就是 1:1 缩略图看到的内容；
+    右侧 .main  放 kicker、标题、副标题和署名，只出现在 2.35:1 头图里。
+  元素必须完整落在其中一块，不能跨越分界线（render.py 会检查）。
+  风格由 body 的 data-style 决定，规格见 references/styles.md。
+  占位符 {{...}} 由 scripts/render.py 填入并做 HTML 转义。
+-->
+<style>
+  :root { --w: 900px; --h: 383px; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: var(--w); height: var(--h); overflow: hidden; }
+  body { display: flex; font-family: "Noto Sans CJK SC", sans-serif; -webkit-font-smoothing: antialiased; }
+  .crop { width: var(--h); height: var(--h); flex: none; display: flex; align-items: center; justify-content: center; position: relative; }
+  .mark { display: block; text-align: center; line-height: 1.25; white-space: nowrap; }
+  .main { flex: 1; height: var(--h); padding: 40px 44px 34px 40px; display: flex; flex-direction: column; justify-content: space-between; min-width: 0; }
+  .kicker { font-family: "IBM Plex Mono", "Noto Sans Mono CJK SC", monospace; font-size: 15px; letter-spacing: .2em; text-transform: uppercase; white-space: nowrap; overflow: hidden; }
+  .title { font-size: 44px; line-height: 1.22; max-height: calc(44px * 1.22 * 3 + 8px); overflow: hidden; word-break: normal; overflow-wrap: break-word; line-break: strict; }
+  .subtitle { font-size: 18px; line-height: 1.5; margin-top: 12px; max-height: calc(18px * 1.5 * 2 + 4px); overflow: hidden; }
+  .foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; font-size: 14px; white-space: nowrap; }
+  .foot span { overflow: hidden; text-overflow: clip; }
+  .rule { height: 1px; margin: 0 0 12px; }
+
+  /* 1. 瑞士极简：白底黑字、单一点缀色、左对齐、零圆角零阴影 */
+  body[data-style="swiss"] { background: #fafaf8; color: #0a0a0a; }
+  body[data-style="swiss"] .crop { background: #002FA7; color: #ffffff; }
+  body[data-style="swiss"] .mark { font-weight: 200; font-size: 128px; letter-spacing: -.02em; }
+  body[data-style="swiss"] .kicker { color: #002FA7; }
+  body[data-style="swiss"] .title { font-weight: 300; }
+  body[data-style="swiss"] .subtitle, body[data-style="swiss"] .foot { color: #5f5f5f; }
+  body[data-style="swiss"] .rule { background: #d8d8d4; }
+
+  /* 2. 杂志编辑：暖纸、衬线、细线分隔 */
+  body[data-style="editorial"] { background: #f3f0e8; color: #16251b; font-family: "Noto Serif CJK SC", serif; }
+  body[data-style="editorial"] .crop { background: #e7e1d3; color: #9b5a2e; border-right: 1px solid #cfc7b5; }
+  body[data-style="editorial"] .mark { font-family: "Noto Serif CJK SC", serif; font-weight: 500; font-size: 112px; }
+  body[data-style="editorial"] .kicker { color: #9b5a2e; }
+  body[data-style="editorial"] .title { font-weight: 500; }
+  body[data-style="editorial"] .subtitle, body[data-style="editorial"] .foot { color: #5c564e; }
+  body[data-style="editorial"] .rule { background: #cfc7b5; }
+
+  /* 3. 极客终端：深底、等宽、终端绿点缀 */
+  body[data-style="terminal"] { background: #0d1117; color: #e6edf3; font-family: "Noto Sans Mono CJK SC", monospace; }
+  body[data-style="terminal"] .crop { background: #161b22; color: #3fb950; border-right: 1px solid #30363d; }
+  body[data-style="terminal"] .mark { font-family: "IBM Plex Mono", "Noto Sans Mono CJK SC", monospace; font-weight: 500; font-size: 104px; }
+  body[data-style="terminal"] .kicker { color: #3fb950; }
+  body[data-style="terminal"] .kicker::before { content: "$ "; }
+  body[data-style="terminal"] .title { font-weight: 500; font-size: 40px; max-height: calc(40px * 1.22 * 3 + 8px); }
+  body[data-style="terminal"] .subtitle, body[data-style="terminal"] .foot { color: #9ba7b4; }
+  body[data-style="terminal"] .rule { background: #30363d; }
+</style>
+</head>
+<body data-style="{{STYLE}}">
+  <div class="crop" data-zone="crop">
+    <span class="mark" data-fit data-role="mark">{{MARK}}</span>
+  </div>
+  <div class="main" data-zone="main">
+    <div>
+      <div class="kicker" data-fit data-role="kicker">{{KICKER}}</div>
+    </div>
+    <div>
+      <h1 class="title" data-fit data-lines="3" data-role="title">{{TITLE}}</h1>
+      <p class="subtitle" data-fit data-lines="2" data-role="subtitle">{{SUBTITLE}}</p>
+    </div>
+    <div>
+      <div class="rule"></div>
+      <div class="foot"><span data-fit data-role="byline">{{BYLINE}}</span><span data-fit data-role="date">{{DATE}}</span></div>
+    </div>
+  </div>
+</body>
+</html>
