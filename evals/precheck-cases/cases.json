@@ -1,0 +1,11 @@
+{
+  "about": "gzh-precheck 的故意埋雷稿件。每条用例给出要传给 check_sources.py 的文件和期望结果；expect_error_contains 里的每个片段都必须出现在某条错误信息里。",
+  "cases": [
+    {"id": "clean", "final": "clean.md", "expect_pass": true},
+    {"id": "missing_source", "final": "missing-source.md", "expect_pass": false, "expect_error_contains": ["没有出处"]},
+    {"id": "absolute_title", "final": "absolute-title.md", "expect_pass": false, "expect_error_contains": ["标题含绝对化用语"]},
+    {"id": "placeholder_source", "final": "placeholder-source.md", "expect_pass": false, "expect_error_contains": ["出处不合格"]},
+    {"id": "hedge_upgrade", "final": "hedge-upgrade.final.md", "draft": "hedge-upgrade.draft.md", "expect_pass": false, "expect_error_contains": ["限定词“可能”"]},
+    {"id": "new_number", "final": "new-number.final.md", "draft": "new-number.draft.md", "expect_pass": false, "expect_error_contains": ["初稿没有的数字 9"]}
+  ]
+}

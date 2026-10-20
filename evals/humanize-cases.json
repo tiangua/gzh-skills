@@ -1,0 +1,130 @@
+{
+  "about": "zh-humanize 的边界测试。让执行者读取 skills/zh-humanize/SKILL.md 后，只拿 request 和 input 去改写，不要给它看 reference_output。把输出存下来，用 `run_checks.py humanize --cases` 自动检查数字、限定词、链接、must_keep，再人工核对 notes 里的要点。reference_output 和 bad_output 用来自测检查脚本本身。",
+  "license_note": "标注 adapted_from 的案例改写自 op7418/Humanizer-zh 的 tests/fixtures/cases.json（MIT，Copyright (c) 2026 歸藏）；其余为本项目原创。",
+  "cases": [
+    {
+      "id": "hedged_release",
+      "request": "去掉这段的 AI 腔。",
+      "input": "这不仅是一次模型更新，更是行业格局的深刻重塑。据官方博客，新模型计划在下个月开放 API[^1]，目前仅向部分企业客户提供。",
+      "must_keep": ["计划", "下个月", "仅", "部分企业客户", "[^1]"],
+      "must_not_add": ["已开放", "全面开放"],
+      "reference_output": "据官方博客，新模型计划在下个月开放 API[^1]，目前仅向部分企业客户提供。",
+      "bad_output": "新模型下个月全面开放 API[^1]，企业客户已经可以使用。",
+      "notes": "删假对比和拔高；“计划”“仅”“部分”不能丢，不能写成已经开放。"
+    },
+    {
+      "id": "benchmark_numbers",
+      "request": "润色这段，读起来自然一点。",
+      "input": "值得注意的是，在论文报告的基准测试中，该方法的准确率约为 71.3%，比基线高出约 4 个百分点[^2]。作者也指出，这一结果尚未在更大规模的数据集上验证。",
+      "must_keep": ["约", "71.3%", "4", "尚未", "[^2]", "作者也指出"],
+      "must_not_add": ["显著", "大幅"],
+      "reference_output": "论文报告的基准测试中，该方法的准确率约为 71.3%，比基线高约 4 个百分点[^2]。作者也指出，这一结果尚未在更大规模的数据集上验证。",
+      "bad_output": "该方法准确率达到 71.3%，大幅领先基线[^2]。",
+      "notes": "“约”两处都要留；作者的局限说明不能删。"
+    },
+    {
+      "id": "unnamed_experts",
+      "request": "去掉套话。",
+      "input": "业内人士普遍认为，智能体的长期记忆将彻底改变人机交互，具有划时代的意义。",
+      "must_keep": ["认为"],
+      "must_not_add": ["研究表明", "数据显示", "%"],
+      "reference_output": "有业内人士认为，智能体的长期记忆会改变人机交互。",
+      "bad_output": "研究表明，智能体的长期记忆已经改变了 80% 的人机交互。",
+      "notes": "删“划时代”；保留“认为”这个归因，不能补造研究或数字。“普遍”无依据可弱化，但改动要写进改动说明。"
+    },
+    {
+      "id": "author_voice_first_person",
+      "request": "让这段更像人写的。",
+      "input": "我试了两天，还没想好要不要换掉现在的工作流。它在长文档上确实快，但有一次把引用的页码弄错了。",
+      "must_keep": ["两天", "还没想好", "确实快", "页码弄错"],
+      "must_not_add": ["同事", "朋友", "震惊", "拍了桌子"],
+      "reference_output": "我试了两天，还没想好要不要换掉现在的工作流。它处理长文档确实快，但有一次把引用的页码弄错了。",
+      "bad_output": "我和同事试了整整一周，当时就拍了桌子：它太快了，必须换。",
+      "notes": "原文已经自然，基本不动。不能编造同事、情绪场景，也不能把犹豫改成决定。"
+    },
+    {
+      "id": "quote_untouched",
+      "request": "去掉 AI 腔。",
+      "input": "他在帖子里写道：“记忆不是数据库，而是一种习惯。”这句话被大量转发，但他没有给出具体实现。",
+      "must_keep": ["“记忆不是数据库，而是一种习惯。”", "没有给出具体实现"],
+      "must_not_add": [],
+      "reference_output": "他在帖子里写道：“记忆不是数据库，而是一种习惯。”这句话被大量转发，但他没有给出具体实现。",
+      "bad_output": "他在帖子里写道：“记忆是一种习惯。”这句话被大量转发。",
+      "notes": "引语里的“不是……而是……”是原话，不能当 AI 句式删改。"
+    },
+    {
+      "id": "links_and_ordering",
+      "request": "精简这段。",
+      "input": "首先，团队开源了训练代码（[代码仓库](https://github.com/example-org/example-repo)）。其次，他们公布了评测集。最后，权重要等安全评估完成后才会发布。",
+      "must_keep": ["https://github.com/example-org/example-repo", "评测集", "安全评估完成后", "才会"],
+      "must_not_add": ["已发布权重"],
+      "reference_output": "团队开源了训练代码（[代码仓库](https://github.com/example-org/example-repo)），也公布了评测集；权重要等安全评估完成后才会发布。",
+      "bad_output": "团队开源了训练代码、评测集和权重。",
+      "notes": "顺序词可以去，但“等……完成后才会”这个条件必须保留；链接原样保留。示例链接是占位，不指向真实仓库。"
+    },
+    {
+      "id": "decorative_format",
+      "request": "去掉装饰，适合公众号正文。",
+      "input": "🚀 **重磅！** 这款工具 —— 真正的 —— 游戏规则改变者！它支持离线运行。",
+      "must_keep": ["离线运行"],
+      "must_not_add": ["最"],
+      "reference_output": "这款工具支持离线运行。",
+      "bad_output": "这款工具是史上最强的离线工具。",
+      "notes": "删 emoji、破折号悬念和宣传腔；不添加“最”。"
+    },
+    {
+      "id": "already_fine",
+      "request": "检查并润色。",
+      "input": "截至 10 月 18 日，该仓库的 README 仍写着“实验性”。作者在 issue 里说，下一版会补文档。",
+      "must_keep": ["截至", "10", "18", "“实验性”", "下一版会补文档", "作者在 issue 里说"],
+      "must_not_add": [],
+      "reference_output": "截至 10 月 18 日，该仓库的 README 仍写着“实验性”。作者在 issue 里说，下一版会补文档。",
+      "bad_output": "该仓库已经稳定，文档完善。",
+      "notes": "没有问题的段落应原样保留；“截至”界定时效，不能删。"
+    },
+    {
+      "id": "uncertain_cause",
+      "adapted_from": "Humanizer-zh tests/fixtures/cases.json#uncertain_cause",
+      "request": "润色这段故障说明。",
+      "input": "该问题被社区多次报告，被认为可能与内存泄漏有关，但原因尚未确认。",
+      "must_keep": ["可能", "尚未确认", "多次报告", "认为"],
+      "must_not_add": ["导致", "确认是"],
+      "reference_output": "社区多次报告这个问题，有人认为它可能与内存泄漏有关，但原因尚未确认。",
+      "bad_output": "内存泄漏导致了这个问题。",
+      "notes": "相关不能改成因果。"
+    },
+    {
+      "id": "bounds_negation",
+      "adapted_from": "Humanizer-zh tests/fixtures/cases.json#bounds_negation",
+      "request": "润色这段空间说明。",
+      "input": "该空间作为展览场地，设有四个独立展区，总面积超过 3000 平方英尺，但不对公众开放。",
+      "must_keep": ["四个", "超过", "3000", "不对公众开放"],
+      "must_not_add": ["开放参观"],
+      "reference_output": "这个空间是展览场地，有四个独立展区，总面积超过 3000 平方英尺，但不对公众开放。",
+      "bad_output": "这个 3000 平方英尺的展览场地有四个展区。",
+      "notes": "“超过”不等于“等于”；否定不能丢。"
+    },
+    {
+      "id": "ongoing_planned",
+      "adapted_from": "Humanizer-zh tests/fixtures/cases.json#ongoing_planned",
+      "request": "精简这段工作进展。",
+      "input": "我们正在对系统进行全面测试，并计划在周五进行配置调整。测试尚未完成。",
+      "must_keep": ["正在", "计划", "周五", "尚未完成"],
+      "must_not_add": ["已完成"],
+      "reference_output": "我们正在全面测试系统，计划周五调整配置。测试尚未完成。",
+      "bad_output": "我们测试了系统，周五调了配置。",
+      "notes": "进行时和计划不能改成完成时。"
+    },
+    {
+      "id": "attributed_claim",
+      "adapted_from": "Humanizer-zh tests/fixtures/cases.json#attributed_claim",
+      "request": "去掉模板化表达。",
+      "input": "一些未具名的专家认为，这一设计可能减少误操作，充分体现了其重大价值。现有材料没有给出测试结果。",
+      "must_keep": ["未具名", "认为", "可能", "没有给出测试结果"],
+      "must_not_add": ["研究", "%"],
+      "reference_output": "一些未具名的专家认为，这一设计可能减少误操作。现有材料没有给出测试结果。",
+      "bad_output": "这一设计能减少误操作。",
+      "notes": "删句尾拔高；保留未具名归因、“可能”和证据缺口。"
+    }
+  ]
+}
