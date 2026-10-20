@@ -62,7 +62,7 @@ python3 -m venv .venv
 
 - [`examples/2026-10-20-digest-limit/`](examples/2026-10-20-digest-limit/)：一份完整示例，从构造的简报条目到手动发布包。示例里的事实来自微信官方文档，已核对；署名为虚构的“示例账号”。
 - `evals/`：
-  - `humanize-cases.json`：`zh-humanize` 的边界用例（不补数字、不丢限定词、不改引语……）；
+  - `humanize-cases.json`：`zh-humanize` 的边界用例（不补数字、不丢限定词、不改引语、润色后不变长变空……）；
   - `precheck-cases/`：故意埋了问题的稿件（缺出处、绝对化标题、“可能”变“确定”、新增数字、占位链接）；
   - `run_checks.py`：一键跑全部脚本类检查。
 
@@ -92,7 +92,7 @@ gzh-skills/
 
 ## 许可证与来源
 
-Apache-2.0。部分内容改写自 ZJU-REAL/Easel（Apache-2.0）、op7418/Humanizer-zh（MIT）、wewrite（MIT）、doocs/md（WTFPL），逐项说明见 [CREDITS.md](CREDITS.md) 和 [NOTICE](NOTICE)。AGPL 等许可的项目只借鉴思路，本仓库不含它们的任何文字或代码。
+Apache-2.0。部分内容改写自 ZJU-REAL/Easel（Apache-2.0）、op7418/Humanizer-zh（MIT）、Nanako0129/sepia（MIT）、wewrite（MIT）、doocs/md（WTFPL），逐项说明见 [CREDITS.md](CREDITS.md) 和 [NOTICE](NOTICE)。AGPL 等许可的项目只借鉴思路，本仓库不含它们的任何文字或代码。
 
 ## 后续计划
 

@@ -21,6 +21,9 @@
 | 同上 | 同上 | 同上 | `skills/gzh-pipeline/SKILL.md` | 阶段划分、每篇独立目录、失败只重做失败阶段（`skills/wewrite/SKILL.md`） |
 | 同上 | 同上 | 同上 | `skills/gzh-format/scripts/wechat_html.py` | 外链转脚注编号、列表转 section、加粗后标点外移、中英文补空格这几个处理点（`wewrite-publish/references/wechat-constraints.md` 的说明）。代码重新编写 |
 | 同上 | 同上 | 同上 | `skills/gzh-precheck/SKILL.md` | “逐项对到来源、查不到就删除或缩小”的审稿做法（`wewrite-review`） |
+| [Nanako0129/sepia](https://github.com/Nanako0129/sepia) | MIT | `fb06be7` | `skills/zh-humanize/SKILL.md` 步骤 2、4 | 结构检查：首句连读（outline test）、每段回答什么问题（QUD 检查，至少一段做对比或核实）、中段有开头没预告的信息、结尾不复述（`skills/sepia/references/discourse-pass.md` §1–2、`professional-pass.md` 第 7 项）；删除测试与回退测试（`style-pass.md` §4 末段）；“每篇只挑 3–5 处”的选择原则（`SKILL.md` Calibration）。全部用中文重写，不设数字阈值。未采用 `languages/zh.md` 的标点、数字规则，因其以台湾繁体为准，不适用于简体 |
+| 同上 | 同上 | 同上 | `skills/gzh-draft/SKILL.md` 步骤 3–5、`templates/article.md`、`references/claims-table.md` | 把固定的“是什么 → 为什么重要 → 怎么做 → 结论”问题序列视为机器结构；从具体问题开头；至少一个写明不成立条件的判断；篇幅按内容分配（`references/domains/tech-articles.md` 规则 1–3、5） |
+| 同上 | 同上 | 同上 | `evals/humanize-cases.json` | 3 条“润色后变长变空”用例（`padding_already_plain`、`revert_shorter_word`、`nominalization_padding`）依据删除 / 回退测试的思路原创，未复制 sepia 的用例 |
 | [doocs/md](https://github.com/doocs/md) | WTFPL | `f8d9126` | `skills/gzh-format/themes/classic.json`、`grace.json` | `default.css`、`grace.css` 的标题、段落、引用、表格等样式；默认字体栈和主题色。CSS 变量展开为固定值，去掉阴影和公众号不支持的写法 |
 
 ## 二、只借鉴思路（本仓库不含其任何文字或代码）

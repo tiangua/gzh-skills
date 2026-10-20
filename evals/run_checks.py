@@ -151,7 +151,7 @@ def _precheck_args(cs, argv):
 
 
 # ----------------------------------------------------------------------------- humanize
-def preserve_problems(original: str, edited: str, must_keep=(), must_not_add=()) -> list[str]:
+def preserve_problems(original: str, edited: str, must_keep=(), must_not_add=(), max_len_ratio=None) -> list[str]:
     import check_sources as cs
     probs = []
     o_vis, e_vis = cs.strip_links(original), cs.strip_links(edited)
@@ -175,7 +175,17 @@ def preserve_problems(original: str, edited: str, must_keep=(), must_not_add=())
     for s in must_not_add:
         if s and s in edited and s not in original:
             probs.append(f"出现了不应新增的“{s}”")
+    if max_len_ratio is not None:
+        ol, el = _visible_len(original), _visible_len(edited)
+        if el > ol * max_len_ratio:
+            probs.append(f"改后变长：{ol} → {el} 字（上限为原文的 {max_len_ratio} 倍）")
     return probs
+
+
+def _visible_len(s: str) -> int:
+    """去掉链接目标和空白后的字数，用来判断润色有没有把文本写长。"""
+    import check_sources as cs
+    return len(re.sub(r"\s+", "", cs.strip_links(s)))
 
 
 def check_humanize(original=None, edited=None, outputs=None) -> bool:
@@ -195,12 +205,14 @@ def check_humanize(original=None, edited=None, outputs=None) -> bool:
         for c in data:
             if c["id"] not in outs:
                 continue
-            probs = preserve_problems(c["input"], outs[c["id"]], c.get("must_keep", []), c.get("must_not_add", []))
+            probs = preserve_problems(c["input"], outs[c["id"]], c.get("must_keep", []), c.get("must_not_add", []),
+                                      c.get("max_len_ratio"))
             ok &= record(f"humanize 输出 {c['id']}", not probs, "; ".join(probs) + ("" if not probs else f"（人工要点：{c['notes']}）"))
         return ok
     for c in data:
-        ref = preserve_problems(c["input"], c["reference_output"], c.get("must_keep", []), c.get("must_not_add", []))
-        bad = preserve_problems(c["input"], c["bad_output"], c.get("must_keep", []), c.get("must_not_add", []))
+        args = (c.get("must_keep", []), c.get("must_not_add", []), c.get("max_len_ratio"))
+        ref = preserve_problems(c["input"], c["reference_output"], *args)
+        bad = preserve_problems(c["input"], c["bad_output"], *args)
         ok &= record(f"humanize 用例 {c['id']}", not ref and bool(bad),
                      ("参考答案未通过：" + "; ".join(ref) if ref else "") + ("" if bad else " 反例没有被识别"))
     ok &= check_humanize(str(EXAMPLE / "02-draft.md"), str(EXAMPLE / "03-final.md"))
