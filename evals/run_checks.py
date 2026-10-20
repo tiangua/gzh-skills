@@ -129,9 +129,12 @@ def check_precheck() -> bool:
         res = cs.run(ns)
         good = res["pass"] == c["expect_pass"]
         missing = [s for s in c.get("expect_error_contains", []) if not any(s in e for e in res["errors"])]
-        ok &= record(f"precheck {c['id']}", good and not missing,
+        extra = [s for s in c.get("expect_error_absent", []) if any(s in e for e in res["errors"])]
+        fine = good and not missing and not extra
+        ok &= record(f"precheck {c['id']}", fine,
                      ("" if good else f"pass={res['pass']} 期望 {c['expect_pass']}；") + (f"缺少错误片段 {missing}；" if missing else "")
-                     + ("" if good and not missing else " 实际错误：" + " | ".join(res["errors"])[:300]))
+                     + (f"不该出现的错误片段 {extra}；" if extra else "")
+                     + ("" if fine else " 实际错误：" + " | ".join(res["errors"])[:300]))
     ns = _precheck_args(cs, ["--final", str(EXAMPLE / "03-final.md"), "--draft", str(EXAMPLE / "02-draft.md"),
                              "--claims", str(EXAMPLE / "02-claims.md"), "--html", str(EXAMPLE / "04-article.html"), "--quiet"])
     res = cs.run(ns)

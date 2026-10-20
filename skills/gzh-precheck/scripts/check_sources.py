@@ -9,7 +9,9 @@
   出处     含数字、日期、引语或“发布/宣布/表示/据”等归因词的句子，所在段落必须有链接或脚注
   脚注     引用与定义一一对应；出处必须是 http(s) 链接，不能是搜索结果页或占位链接
   限定词   与初稿相比，“可能/据称/计划/预计/尚未/约/超过……”不能变少（防止把含糊说法改成确定）
-  数字     终稿不能出现初稿没有的数字；标题里的数字必须在正文出现
+  数字     终稿不能出现初稿没有的数字；标题里的数字必须在正文出现（标题开头的期号如“01｜”除外）
+  占位     正文、标题、摘要里出现【占位】【待定】“待实测”“待填”（含【占位·待实测】等变体）即为错误
+  豁免     <!-- nocheck:说明 --> … <!-- /nocheck --> 之间的文字只跳过“缺出处”检查，其余检查照常
   绝对化   “最/第一/唯一/100%/绝对/保证……”给出警告；出现在标题里视为错误
   对照表   已核实的“事实”行必须有出处；列出“待核实/不支持”的行供人工确认未进入正文
   HTML     调用 gzh-format 的合规检查
@@ -47,6 +49,14 @@ OPINION = ["我认为", "我的判断", "我觉得", "我们认为", "在我看�
 BAD_SOURCE = [r"google\.[a-z.]+/search", r"bing\.com/search", r"baidu\.com/s\?", r"sogou\.com/web",
               r"example\.(com|org|net)", r"\.invalid\b", r"localhost", r"replace-me"]
 NUM_RE = re.compile(r"(?<![\w.])\d+(?:[.,]\d+)*%?")
+# 未替换的占位：【……占位……】【……待定……】，以及任何位置的“待实测”“待填”
+PLACEHOLDER_RE = re.compile(r"【[^】\n]*?(?:占位|待定)[^】\n]*】|待实测|待填")
+# 只跳过“缺出处”检查的区块：题面、推导、栏目固定话术等不是事实陈述的文字
+NOCHECK_RE = re.compile(r"<!--\s*nocheck(?::[^>]*?)?\s*-->.*?<!--\s*/nocheck\s*-->", re.S)
+NOCHECK_OPEN = re.compile(r"<!--\s*nocheck(?::[^>]*?)?\s*-->")
+NOCHECK_CLOSE = re.compile(r"<!--\s*/nocheck\s*-->")
+# 标题里的期号：“01｜”“第 3 期”“第 02 题”
+ISSUE_RE = re.compile(r"(?<![\w.])\d{1,4}\s*(?:期|题)?\s*(?=[｜|])|第\s*\d{1,4}\s*[期题]")
 
 
 # ----------------------------------------------------------------------------- parsing
@@ -58,6 +68,12 @@ def split_front_matter(text: str):
     sys.path.insert(0, str(FORMAT_SCRIPTS))
     from wechat_html import split_front_matter as sfm  # 复用 gzh-format 的解析
     return sfm(text)
+
+
+def visible_body(body: str) -> str:
+    """去掉 HTML 注释和代码块后的正文（排版后读者能看到的文字）。"""
+    body = re.sub(r"<!--.*?-->", "", body, flags=re.S)
+    return re.sub(r"^(```|~~~).*?^\1\s*$", "", body, flags=re.S | re.M)
 
 
 def body_blocks(body: str):
@@ -180,11 +196,30 @@ def run(args) -> dict:
     if not meta.get("digest"):
         warnings.append("没有摘要：公众号会默认抓取正文前 54 个字")
 
+    # 占位：正文（含引用块、nocheck 区块）、标题、摘要
+    for where, text in (("标题", title), ("摘要", str(meta.get("digest") or ""))):
+        for m in PLACEHOLDER_RE.finditer(text):
+            errors.append(f"{where}含未替换的占位“{m.group(0)}”")
+    ph_n = 0
+    for line in visible_body(final_body).splitlines():
+        for m in PLACEHOLDER_RE.finditer(line):
+            ph_n += 1
+            errors.append(f"正文含未替换的占位“{m.group(0)}”：{strip_links(line.strip())[:60]}")
+    info["placeholders"] = ph_n
+
+    # nocheck 区块：只跳过“缺出处”检查
+    if len(NOCHECK_OPEN.findall(final_body)) != len(NOCHECK_CLOSE.findall(final_body)):
+        errors.append("nocheck 区块的开始和结束标记数量不一致")
+    skipped = NOCHECK_RE.findall(final_body)
+    info["nocheck_blocks"] = len(skipped)
+    info["nocheck_chars"] = sum(len(re.sub(r"<!--.*?-->|\s", "", s, flags=re.S)) for s in skipped)
+    src_blocks, _ = body_blocks(NOCHECK_RE.sub("", final_body))
+
     # 出处覆盖
     unsourced, factual_n = [], 0
-    for i, b in enumerate(blocks):
+    for i, b in enumerate(src_blocks):
         if b.startswith("TABLE\u241f"):
-            ok = has_source(b) or any(has_source(blocks[j]) for j in (i - 1, i + 1) if 0 <= j < len(blocks))
+            ok = has_source(b) or any(has_source(src_blocks[j]) for j in (i - 1, i + 1) if 0 <= j < len(src_blocks))
             if is_factual(b):
                 factual_n += 1
                 if not ok:
@@ -231,7 +266,7 @@ def run(args) -> dict:
             errors.append(f"标题含绝对化用语“{w}”")
 
     # 标题里的数字必须在正文出现
-    for n in NUM_RE.findall(title):
+    for n in NUM_RE.findall(ISSUE_RE.sub("", title)):
         if n not in strip_links(full_text):
             errors.append(f"标题里的数字 {n} 没有出现在正文中")
 
@@ -327,7 +362,9 @@ def write_report(res: dict, path: str) -> None:
     lines = [f"# 发布前检查：{'通过' if res['pass'] else '不通过'}", "",
              f"- 标题：{res['title']}", f"- 摘要：{res['digest']}", "- 发布方式：手动（固定）",
              f"- 疑似事实句：{res['info'].get('factual_sentences', 0)}，其中无出处：{res['info'].get('unsourced_sentences', 0)}",
-             f"- 出处链接：{len(res['info'].get('source_urls', []))} 个", ""]
+             f"- 出处链接：{len(res['info'].get('source_urls', []))} 个",
+             f"- 未替换的占位：{res['info'].get('placeholders', 0)} 处；nocheck 区块：{res['info'].get('nocheck_blocks', 0)} 个，"
+             f"共 {res['info'].get('nocheck_chars', 0)} 字（只跳过缺出处检查）", ""]
     lines.append("## 错误（必须修复）")
     lines += [f"- {e}" for e in res["errors"]] or ["- 无"]
     lines += ["", "## 警告（逐条人工确认）"]
