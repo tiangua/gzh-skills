@@ -70,7 +70,7 @@ def check_skills() -> bool:
         if hits:
             problems.append(f"正文含特定机器人/账号信息 {hits}")
         ok &= record(f"skills/{d.name}", not problems, "; ".join(problems))
-    ok &= record("skills 数量为 7", len(dirs) == 7, f"实际 {len(dirs)}")
+    ok &= record("skills 数量为 8", len(dirs) == 8, f"实际 {len(dirs)}")
     return ok
 
 
